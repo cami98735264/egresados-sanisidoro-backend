@@ -3,8 +3,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const plain_info_router = require("./router/plain_info/index.js");
-const captcha_router = require("./router/captcha/index.js");
-
+const authentication_router = require("./router/authentication/index.js");
 
 
 app.use(express.json());
@@ -17,7 +16,8 @@ app.use(cookieParser());
 
 
 app.use("/api/info", plain_info_router);
-app.use("/api/verify", captcha_router);
+app.use("/api/auth", authentication_router);
+
 
 app.listen(3000, () => {
     console.log("Server running on port 3000");

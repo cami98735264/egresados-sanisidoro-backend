@@ -2,14 +2,15 @@ const axios = require('axios');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const verifyCaptcha = async (req, res) => {
+const verifyCaptcha = async (req, res, next) => {
     console.log(process.env.CAPTCHA_SECRET_KEY);
     const recaptcha = req.body.recaptcha;
     console.log(req.body)
     if(!recaptcha) {
         return res.json({
             success: false,
-            message: 'Captcha no enviado'
+            message: 'Captcha no enviado',
+            errorType: 'NO_CAPTCHA'
         });
     }
     try {
@@ -19,17 +20,22 @@ const verifyCaptcha = async (req, res) => {
             }
         });
         console.log(googleResponse.data);
-        return res.json({
-            message: "Captcha verificado",
-            success: googleResponse.data.success,
-            errors: googleResponse.data['error-codes']
-        });
+        if(!googleResponse.data.success) {
+            return res.status(403).json({
+                message: "No se ha podido verificar el captcha",
+                success: false,
+                errors: googleResponse.data['error-codes'],
+                errorType: 'CAPTCHA_ERROR'
+            });
+        }
     } catch(err) {
-        return res.json({
+        return res.status(501).json({
             message: "Ocurrió un error en el servidor al verificar el captcha",
-            success: false
+            success: false,
+            errorType: 'INTERNAL_ERROR'
         });
     }
+    next();
 
 }
 
