@@ -59,7 +59,8 @@ const register = async (req, res) => {
             apellidos: newUser.apellidos,
             telefono: newUser.telefono,
             acepta_cookies: newUser.acepta_cookies,
-            direccion: newUser.direccion
+            direccion: newUser.direccion,
+            isAdmin: newUser.isAdmin
         }
         // Falta crear la tabla usuarios en la base de datos
         const token = jwt.sign(payload, JWT_SECRET, {expiresIn: "1h"});

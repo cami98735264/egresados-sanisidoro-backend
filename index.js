@@ -5,7 +5,7 @@ const cors = require("cors");
 const plain_info_router = require("./router/plain_info/index.js");
 const authentication_router = require("./router/authentication/index.js");
 const sequelize = require("./connection/connectToDB.js");
-
+const usuarios_router = require("./router/usuarios/index.js");
 (async () => {
     try {
         await sequelize.authenticate();
@@ -25,6 +25,7 @@ app.use(cookieParser());
 
 app.use("/api/info", plain_info_router);
 app.use("/api/auth", authentication_router);
+app.use("/api/usuarios", usuarios_router);
 
 
 app.listen(3000, () => {

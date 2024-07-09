@@ -36,7 +36,8 @@ const login = (req, res) => {
             apellidos: user.apellidos,
             telefono: user.telefono,
             acepta_cookies: user.acepta_cookies,
-            direccion: user.direccion
+            direccion: user.direccion,
+            isAdmin: user.isAdmin
         }
         const token = jwt.sign(payload, JWT_SECRET_KEY, {expiresIn: "1h"});
         res.cookie("authorization", token, {httpOnly: true, sameSite: "strict"});
